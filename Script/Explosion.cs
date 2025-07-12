@@ -38,7 +38,6 @@ public class Explosion : MonoBehaviour
             }
         }
 
-        Debug.Log(barrels.Count);
         return barrels;
     }
 }

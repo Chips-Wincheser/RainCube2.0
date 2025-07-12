@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -12,19 +13,17 @@ public abstract class BaseSpawner<T> : MonoBehaviour where T : Component
     protected WaitForSeconds _waitForSeconds;
     protected ObjectPool<T> _pool;
 
-    public int CreatedObjectsCount {  get; private set; }
-    public int SpawnedObjectsCount { get; private set; }
+    public event Action ObjectsCountCreated;
+    public event Action ObjectsCountSpawned;
+
     public int ActiveObjectsCount => _pool?.CountActive ?? 0;
 
 
     private void Awake()
     {
-        CreatedObjectsCount = 0;
-        SpawnedObjectsCount = 0;
-
         _pool= new ObjectPool<T>(
-            createFunc: () => { CreatedObjectsCount++; return Instantiate(_prefab); },
-            actionOnGet: (obj) => { SpawnedObjectsCount++; CreateObject(obj); },
+            createFunc: () => CreatePrefabInstance(),
+            actionOnGet: (obj) => OnGetObject(obj),
             actionOnRelease: (obj) => TurningOffObject(obj),
             actionOnDestroy: (obj) => Destroy(obj.gameObject),
             collectionCheck: true,
@@ -33,6 +32,18 @@ public abstract class BaseSpawner<T> : MonoBehaviour where T : Component
             );
 
         _waitForSeconds = new WaitForSeconds(_delay);
+    }
+
+    private T CreatePrefabInstance()
+    {
+        ObjectsCountCreated?.Invoke();
+        return Instantiate(_prefab);
+    }
+
+    private void OnGetObject(T obj)
+    {
+        ObjectsCountSpawned?.Invoke();
+        CreateObject(obj);
     }
 
     protected abstract void CreateObject(T obj);
