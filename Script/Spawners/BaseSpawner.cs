@@ -5,23 +5,23 @@ using UnityEngine.Pool;
 
 public abstract class BaseSpawner<T> : MonoBehaviour where T : Component
 {
-    [SerializeField] protected T _prefab;
+    [SerializeField] protected T Prefab;
     [SerializeField] private float _delay = 1f;
     [SerializeField] private int _poolCapacity = 5;
     [SerializeField] private int _poolMaxSize = 5;
 
-    protected WaitForSeconds _waitForSeconds;
-    protected ObjectPool<T> _pool;
+    protected WaitForSeconds WaitForSeconds;
+    protected ObjectPool<T> Pool;
+
+    public int ActiveObjectsCount => Pool?.CountActive ?? 0;
 
     public event Action ObjectsCountCreated;
     public event Action ObjectsCountSpawned;
-
-    public int ActiveObjectsCount => _pool?.CountActive ?? 0;
-
+    public event Action<int> ActiveObjectsChanged;
 
     private void Awake()
     {
-        _pool= new ObjectPool<T>(
+        Pool= new ObjectPool<T>(
             createFunc: () => CreatePrefabInstance(),
             actionOnGet: (obj) => OnGetObject(obj),
             actionOnRelease: (obj) => TurningOffObject(obj),
@@ -31,19 +31,20 @@ public abstract class BaseSpawner<T> : MonoBehaviour where T : Component
             maxSize: _poolMaxSize
             );
 
-        _waitForSeconds = new WaitForSeconds(_delay);
+        WaitForSeconds = new WaitForSeconds(_delay);
     }
 
     private T CreatePrefabInstance()
     {
         ObjectsCountCreated?.Invoke();
-        return Instantiate(_prefab);
+        return Instantiate(Prefab);
     }
 
     private void OnGetObject(T obj)
     {
         ObjectsCountSpawned?.Invoke();
         CreateObject(obj);
+        ActiveObjectsChanged?.Invoke(ActiveObjectsCount);
     }
 
     protected abstract void CreateObject(T obj);
@@ -54,15 +55,16 @@ public abstract class BaseSpawner<T> : MonoBehaviour where T : Component
     {
         while (true)
         {
-            if (_pool.CountActive<_poolMaxSize)
-                _pool.Get();
+            if (Pool.CountActive<_poolMaxSize)
+                Pool.Get();
 
-            yield return _waitForSeconds;
+            yield return WaitForSeconds;
         }
     }
 
     public void PutObjectInPool(T obj)
     {
-        _pool.Release(obj);
+        Pool.Release(obj);
+        ActiveObjectsChanged?.Invoke(ActiveObjectsCount);
     }
 }

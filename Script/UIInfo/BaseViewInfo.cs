@@ -3,43 +3,43 @@ using UnityEngine;
 
 public class BaseViewInfo<T> : MonoBehaviour where T : Component
 {
-    [SerializeField] protected BaseSpawner<T> _baseSpawner;
+    [SerializeField] protected BaseSpawner<T> BaseSpawner;
 
     [SerializeField] private TextMeshProUGUI _createdText;
     [SerializeField] private TextMeshProUGUI _spawnedText;
     [SerializeField] private TextMeshProUGUI _activeText;
 
-    protected int _createdObjectsCount = 0;
-    protected int _spawnedObjectsCount = 0;
+    protected int CreatedObjectsCount = 0;
+    protected int SpawnedObjectsCount = 0;
 
     private void OnEnable()
     {
-        _baseSpawner.ObjectsCountCreated+=OnObjectCreated;
-        _baseSpawner.ObjectsCountSpawned+=OnObjectSpawned;
+        BaseSpawner.ObjectsCountCreated+=OnObjectCreated;
+        BaseSpawner.ObjectsCountSpawned+=OnObjectSpawned;
+        BaseSpawner.ActiveObjectsChanged+=OnObjectActive;
     }
 
     private void OnDisable()
     {
-        _baseSpawner.ObjectsCountCreated-=OnObjectCreated;
-        _baseSpawner.ObjectsCountSpawned-=OnObjectSpawned;
-    }
-
-    private void Update()
-    {
-        if (_baseSpawner == null) return;
-
-        _createdText.text = $"Создано: {_createdObjectsCount}";
-        _spawnedText.text = $"Заспавнено: {_spawnedObjectsCount}";
-        _activeText.text = $"Активные: {_baseSpawner.ActiveObjectsCount}";
+        BaseSpawner.ObjectsCountCreated-=OnObjectCreated;
+        BaseSpawner.ObjectsCountSpawned-=OnObjectSpawned;
+        BaseSpawner.ActiveObjectsChanged-=OnObjectActive;
     }
 
     private void OnObjectCreated()
     {
-        _createdObjectsCount++;
+        CreatedObjectsCount++;
+        _createdText.text = $"Создано: {CreatedObjectsCount}";
     }
 
     private void OnObjectSpawned()
     {
-        _spawnedObjectsCount++;
+        SpawnedObjectsCount++;
+        _spawnedText.text = $"Заспавнено: {SpawnedObjectsCount}";
+    }
+
+    private void OnObjectActive(int count)
+    {
+        _activeText.text = $"Активные: {count}";
     }
 }

@@ -10,7 +10,7 @@ public class Cube : MonoBehaviour
     private bool _haveCollision=false;
     private int _lifeTime;
 
-    public event Action<Cube> LifeTimeOver;
+    public event Action<Cube> LifeTimeOvered;
     
     private void OnCollisionEnter(Collision collision)
     {
@@ -40,6 +40,6 @@ public class Cube : MonoBehaviour
     {
         yield return _waitForSeconds;
         
-        LifeTimeOver?.Invoke(this);
+        LifeTimeOvered?.Invoke(this);
     }
 }

@@ -13,7 +13,7 @@ public class CubeSpawner : BaseSpawner<Cube>
 
     protected override void CreateObject(Cube obj)
     {
-        obj.LifeTimeOver+=PutObjectInPool;
+        obj.LifeTimeOvered+=PutObjectInPool;
 
         int HalfDivider = 2;
         Vector3 platformSize = _platformCollider.size;
@@ -29,7 +29,7 @@ public class CubeSpawner : BaseSpawner<Cube>
 
     protected override void TurningOffObject(Cube obj)
     {
-        obj.LifeTimeOver -= PutObjectInPool;
+        obj.LifeTimeOvered -= PutObjectInPool;
         obj.gameObject.SetActive(false);
 
         StartCoroutine(_bombSpawner.SpawnObject());

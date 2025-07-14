@@ -455,10 +455,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64956d0581bc99243b19ed6117257250, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseSpawner: {fileID: 1250840943}
+  BaseSpawner: {fileID: 1250840943}
   _createdText: {fileID: 1402560189}
   _spawnedText: {fileID: 883860705}
   _activeText: {fileID: 1666576356}
+--- !u!114 &293060822 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1574349041549074802, guid: 50977b8c083a6974181cad3776802c99, type: 3}
+  m_PrefabInstance: {fileID: 3848804112159077078}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0cf878d2b606e14aaf94b334e024a02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &314997415
 GameObject:
   m_ObjectHideFlags: 0
@@ -647,7 +658,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb6596998be128c43ad22ced5b94841b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseSpawner: {fileID: 994716514}
+  BaseSpawner: {fileID: 994716514}
   _createdText: {fileID: 1760856972}
   _spawnedText: {fileID: 1886868202}
   _activeText: {fileID: 314997417}
@@ -1523,7 +1534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a23d9bc08cee2844a92082f74fcd8432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 1574349041549074802, guid: 50977b8c083a6974181cad3776802c99, type: 3}
+  Prefab: {fileID: 293060822}
   _delay: 1
   _poolCapacity: 5
   _poolMaxSize: 5
@@ -2909,6 +2920,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1677933566368946169, guid: 62794520cf3c08342b4b4d4a84487d96, type: 3}
+      propertyPath: Prefab
+      value: 
+      objectReference: {fileID: 8472386166900253643, guid: 5d60bec2ee701b942ba5ad238dd88c3f, type: 3}
     - target: {fileID: 1677933566368946169, guid: 62794520cf3c08342b4b4d4a84487d96, type: 3}
       propertyPath: _bombSpawner
       value: 
